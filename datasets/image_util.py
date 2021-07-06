@@ -21,11 +21,33 @@ def map_label(label, classes):
 
     return mapped_label
 
+def get_where(label, loc):
+    arr = np.isin(label, loc)
+    #print("len(arr): ",len(arr))
+    result = np.where(arr == True)
+    #print("len(result): ", len(result[0]))
+    #print("len(comp): ", len(np.where(arr == False)[0]))
+    #print("type: ", type(result[0]))
+    return result[0]
+
 class DATA_LOADER(object):
     def __init__(self, opt):
         self.read_matdataset(opt)
         self.index_in_epoch = 0
         self.epochs_completed = 0
+
+    def split_train_test(self, test_train, label):
+        conta = np.zeros(len(self.seenclasses) + len(self.unseenclasses))
+        train = []
+        test = []
+        for i in range(len(test_train)):
+            if conta[label[i]] != 4:
+                train.append(test_train[i])
+                conta[label[i]] = conta[label[i]] + 1
+            else:
+                test.append(test_train[i])
+                conta[label[i]] = 0
+        return np.array(train), np.array(test)
 
     def read_matdataset(self, opt):
         matcontent = sio.loadmat(opt.dataroot + "/" + opt.dataset + "/" + opt.image_embedding + ".mat")
@@ -79,6 +101,35 @@ class DATA_LOADER(object):
         self.seenclasses = torch.from_numpy(np.unique(self.train_label.numpy()))
         self.unseenclasses = torch.from_numpy(np.unique(self.test_unseen_label.numpy()))
 
+        """
+        Preprocess dataset
+        """
+
+        print("train_val_loc: ", trainval_loc)
+        print("test_seen_loc: ", test_seen_loc)
+        print("test_unseen_label: ", np.unique(self.test_unseen_label))
+        print("test_seen_label: ", np.unique(self.test_seen_label))
+        print("train_label: ", np.unique(self.train_label))
+        print("label: ", np.unique(label))
+
+        test_unseen_loc = get_where(label, np.unique(self.test_unseen_label))
+        self.test_unseen_feature = torch.from_numpy(feature[test_unseen_loc]).float()
+
+        test_train = get_where(label, np.unique(self.test_seen_label))
+        print("test_train[0]: ", test_train[0])
+        print("test_train[-1]: ", test_train[-1])
+        
+        print("label[test_train]: ", label[test_train])
+        print("len(test_train): ", len(test_train))
+        train, test = self.split_train_test(test_train, label)
+        print("train: ", train.shape)
+        print("test: ", test.shape)
+
+        self.train_feature = torch.from_numpy(feature[train]).float()
+        self.test_seen_feature = torch.from_numpy(feature[test]).float()
+
+        print("train_feature: ", self.train_feature)
+        print("test_seen_feature: ", self.test_seen_feature)
 
         self.ntrain = self.train_feature.size()[0]
         self.ntest_seen = self.test_seen_feature.size()[0]

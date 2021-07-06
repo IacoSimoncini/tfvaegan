@@ -1,12 +1,19 @@
 #author: akshitac8
 #tf-vaegan inductive
 from __future__ import print_function
+import os
 import random
 import torch
+import torch.nn as nn
 import torch.autograd as autograd
 import torch.optim as optim
 import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
+import numpy as np
+import math
+import sys
+from sklearn import preprocessing
+import csv
 #import functions
 import networks.TFVAEGAN_model as model
 import datasets.image_util as util
@@ -91,12 +98,12 @@ def generate_syn_feature(generator,classes, attribute,num,netF=None,netDec=None)
         iclass_att = attribute[iclass]
         syn_att.copy_(iclass_att.repeat(num, 1))
         syn_noise.normal_(0, 1)
-        syn_noisev = Variable(syn_noise,volatile=True)
-        syn_attv = Variable(syn_att,volatile=True)
+        syn_noisev = Variable(syn_noise)
+        syn_attv = Variable(syn_att)
         fake = generator(syn_noisev,c=syn_attv)
         if netF is not None:
-            # dec_out = netDec(fake) # only to call the forward function of decoder
-            dec_hidden_feat = netDec(fake).getLayersOutDet() #no detach layers
+            dec_out = netDec(fake) # only to call the forward function of decoder
+            dec_hidden_feat = netDec.getLayersOutDet() #no detach layers
             feedback_out = netF(dec_hidden_feat)
             fake = generator(syn_noisev, a1=opt.a2, c=syn_attv, feedback_layers=feedback_out)
         output = fake
@@ -141,7 +148,7 @@ for epoch in range(0,opt.nepoch):
             for p in netD.parameters(): #unfreeze discrimator
                 p.requires_grad = True
 
-            for p in netDec.parameters(): #unfreeze deocder
+            for p in netDec.parameters(): #unfreeze decoder
                 p.requires_grad = True
             # Train D1 and Decoder (and Decoder Discriminator)
             gp_sum = 0 #lAMBDA VARIABLE
@@ -256,9 +263,8 @@ for epoch in range(0,opt.nepoch):
             if loop == 1:
                 optimizerF.step()
             if opt.recons_weight > 0 and not opt.freeze_dec: # not train decoder at feedback time
-                optimizerDec.step() 
-        
-    print('[%d/%d]  Loss_D: %.4f Loss_G: %.4f, Wasserstein_dist:%.4f, vae_loss_seen:%.4f'% (epoch, opt.nepoch, D_cost.data[0], G_cost.data[0], Wasserstein_D.data[0],vae_loss_seen.data[0]),end=" ")
+                optimizerDec.step()
+    print('[%d/%d]  Loss_D: %.4f Loss_G: %.4f, Wasserstein_dist:%.4f, vae_loss_seen:%.4f'% (epoch, opt.nepoch, float(D_cost), float(G_cost), float(Wasserstein_D), float(vae_loss_seen))) 
     netG.eval()
     netDec.eval()
     netF.eval()
@@ -275,7 +281,6 @@ for epoch in range(0,opt.nepoch):
         if best_gzsl_acc < gzsl_cls.H:
             best_acc_seen, best_acc_unseen, best_gzsl_acc = gzsl_cls.acc_seen, gzsl_cls.acc_unseen, gzsl_cls.H
         print('GZSL: seen=%.4f, unseen=%.4f, h=%.4f' % (gzsl_cls.acc_seen, gzsl_cls.acc_unseen, gzsl_cls.H),end=" ")
-
     # Zero-shot learning
     # Train ZSL classifier
     zsl_cls = classifier.CLASSIFIER(syn_feature, util.map_label(syn_label, data.unseenclasses), \
