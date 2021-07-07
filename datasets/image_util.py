@@ -23,11 +23,7 @@ def map_label(label, classes):
 
 def get_where(label, loc):
     arr = np.isin(label, loc)
-    #print("len(arr): ",len(arr))
     result = np.where(arr == True)
-    #print("len(result): ", len(result[0]))
-    #print("len(comp): ", len(np.where(arr == False)[0]))
-    #print("type: ", type(result[0]))
     return result[0]
 
 class DATA_LOADER(object):
@@ -98,40 +94,27 @@ class DATA_LOADER(object):
             self.test_unseen_feature = torch.from_numpy(feature[val_unseen_loc]).float()
             self.test_unseen_label = torch.from_numpy(label[val_unseen_loc]).long() 
     
+        print("train_feature: ", self.train_feature.size()[0])
+
         self.seenclasses = torch.from_numpy(np.unique(self.train_label.numpy()))
         self.unseenclasses = torch.from_numpy(np.unique(self.test_unseen_label.numpy()))
 
-        """
-        Preprocess dataset
-        """
-
-        print("train_val_loc: ", trainval_loc)
-        print("test_seen_loc: ", test_seen_loc)
-        print("test_unseen_label: ", np.unique(self.test_unseen_label))
-        print("test_seen_label: ", np.unique(self.test_seen_label))
-        print("train_label: ", np.unique(self.train_label))
-        print("label: ", np.unique(label))
-
         test_unseen_loc = get_where(label, np.unique(self.test_unseen_label))
         self.test_unseen_feature = torch.from_numpy(feature[test_unseen_loc]).float()
+        self.test_unseen_label = torch.from_numpy(label[test_unseen_loc]).long()
 
         test_train = get_where(label, np.unique(self.test_seen_label))
-        print("test_train[0]: ", test_train[0])
-        print("test_train[-1]: ", test_train[-1])
         
-        print("label[test_train]: ", label[test_train])
-        print("len(test_train): ", len(test_train))
         train, test = self.split_train_test(test_train, label)
+        self.train_label = torch.from_numpy(label[train]).long()
         print("train: ", train.shape)
-        print("test: ", test.shape)
 
         self.train_feature = torch.from_numpy(feature[train]).float()
         self.test_seen_feature = torch.from_numpy(feature[test]).float()
-
-        print("train_feature: ", self.train_feature)
-        print("test_seen_feature: ", self.test_seen_feature)
+        self.test_seen_label = torch.from_numpy(label[test]).long()
 
         self.ntrain = self.train_feature.size()[0]
+        print("ntrain: ", self.ntrain)
         self.ntest_seen = self.test_seen_feature.size()[0]
         self.ntest_unseen = self.test_unseen_feature.size()[0]
         self.ntrain_class = self.seenclasses.size(0)

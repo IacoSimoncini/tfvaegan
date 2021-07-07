@@ -54,6 +54,7 @@ input_att = torch.FloatTensor(opt.batch_size, opt.attSize) #attSize class-embedd
 noise = torch.FloatTensor(opt.batch_size, opt.nz)
 one = torch.FloatTensor([1])
 mone = one * -1
+
 ##########
 # Cuda
 if opt.cuda:
