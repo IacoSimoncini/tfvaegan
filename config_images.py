@@ -1,4 +1,3 @@
-#author: akshitac8
 import argparse
 
 parser = argparse.ArgumentParser()

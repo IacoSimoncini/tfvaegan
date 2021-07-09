@@ -1,4 +1,3 @@
-#author: akshitac8
 #tf-vaegan inductive
 from __future__ import print_function
 import os
