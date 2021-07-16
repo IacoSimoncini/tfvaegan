@@ -1,18 +1,6 @@
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/generalized-zero-shot-learning-on-awa2)](https://paperswithcode.com/sota/generalized-zero-shot-learning-on-awa2?p=latent-embedding-feedback-and-discriminative)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/zero-shot-learning-on-awa2)](https://paperswithcode.com/sota/zero-shot-learning-on-awa2?p=latent-embedding-feedback-and-discriminative)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/generalized-zero-shot-learning-on-cub-200)](https://paperswithcode.com/sota/generalized-zero-shot-learning-on-cub-200?p=latent-embedding-feedback-and-discriminative)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/zero-shot-learning-on-cub-200-2011)](https://paperswithcode.com/sota/zero-shot-learning-on-cub-200-2011?p=latent-embedding-feedback-and-discriminative)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/generalized-zero-shot-learning-on-oxford-102-1)](https://paperswithcode.com/sota/generalized-zero-shot-learning-on-oxford-102-1?p=latent-embedding-feedback-and-discriminative)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/zero-shot-learning-on-oxford-102-flower)](https://paperswithcode.com/sota/zero-shot-learning-on-oxford-102-flower?p=latent-embedding-feedback-and-discriminative)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/generalized-zero-shot-learning-on-sun)](https://paperswithcode.com/sota/generalized-zero-shot-learning-on-sun?p=latent-embedding-feedback-and-discriminative)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-embedding-feedback-and-discriminative/zero-shot-learning-on-sun-attribute)](https://paperswithcode.com/sota/zero-shot-learning-on-sun-attribute?p=latent-embedding-feedback-and-discriminative)
-
-
-
-
 # New Paths for Zero-Shot Learning Research
 
-#### [Nicola Carletti], [Iacopo Simoncini]####
+#### Nicola Carletti, Iacopo Simoncini 
 
 
 Zero-shot learning (ZSL) is a problem setup in machine learning which aims to train a model for classifying data samples under the condition that some
