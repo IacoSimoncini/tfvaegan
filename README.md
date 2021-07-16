@@ -26,19 +26,19 @@ Zero-shot learning (ZSL) is a problem setup in machine learning which aims to tr
 The model is built in PyTorch 0.3.1 and tested on Ubuntu 16.04 environment (Python3.6, CUDA9.0, cuDNN7.5).
 
 For installing, follow these intructions
-```
+
 conda create -n tfvaegan python=3.6
 conda activate tfvaegan
 pip install https://download.pytorch.org/whl/cu90/torch-0.3.1-cp36-cp36m-linux_x86_64.whl
 pip install torchvision==0.2.0 scikit-learn==0.22.1 scipy==1.4.1 h5py==2.10 numpy==1.18.1
-```
+
 
 ## Data preparation
 
 
 
 Download CUB, AWA, FLO and SUN features from the drive link shared below.
-```
+
 link: https://drive.google.com/drive/folders/16Xk1eFSWjQTtuQivTogMmvL3P6F_084u?usp=sharing
 
 Save the datasets on your drive
