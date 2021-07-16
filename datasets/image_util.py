@@ -88,9 +88,10 @@ class DATA_LOADER(object):
         
         all_classes = np.arange(start=0, stop=opt.nclass_all - 1, step=1)
 
+        #CHANGE HERE WITH THE ARRAY OF THE UNSEEN CLASS OF THE SPLITS YOU WANT TO USE
         unseen_classes = np.array([6,  18,  20,  28,  33,  35,  49,  55,  61,  67,  68,  71,  78,  79,  86,  87,  90,  94,
                                     97,  99, 103, 107, 115, 119, 121, 123, 124, 128, 138, 140, 141, 149, 151, 156, 158, 159,
-                                    165, 166, 170, 173, 175, 178, 181, 184, 186, 188, 190, 191, 192, 194])
+                                    165, 166, 170, 173, 175, 178, 181, 184, 186, 188, 190, 191, 192, 194])  
 
         test_unseen_loc = get_where(label, unseen_classes)
         np.random.shuffle(test_unseen_loc)
